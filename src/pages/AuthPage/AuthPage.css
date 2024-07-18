@@ -1,0 +1,69 @@
+.auth-page-container {
+    width: 100%;
+    height: 100%;
+    padding-top: 10%;
+}
+
+.auth-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-title {
+    font-size: 30px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-button {
+    width: 100%;
+    padding: 10px 0;
+    border-radius: 7px;
+    background-color: #0f63c4;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.auth-button:active {
+    filter: brightness(110%);
+}
+
+.auth-page-have-account-button {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.auth-page-have-account-button-button,
+.auth-page-have-account-button-button:visited {
+    color: var(--hyperlink-text-color);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.auth-form-username-field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.auth-form-forgot-password {
+    font-size: 12px;
+    margin-top: 10px;
+    align-self: end;
+    color: var(--hyperlink-text-color);
+    cursor: pointer;
+}
+
+.forgot-password-description {
+    text-align: center;
+}

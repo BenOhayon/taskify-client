@@ -1,0 +1,9 @@
+.sidebar-layout {
+    height: 100%;
+    display: flex;
+}
+
+.sidebar-layout-content {
+    max-width: var(--app-max-width);
+	margin: 0 auto;
+}

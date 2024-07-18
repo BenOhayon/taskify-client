@@ -1,0 +1,17 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background-color: lightblue;
+}
+
+#root {
+  --app-max-width: 1000px;
+  --task-input-height: 50px;
+  --task-input-add-button-height: 45px;
+  --hyperlink-text-color: #0c4fc3;
+
+  height: 100dvh;
+}
+
+body {
+  margin: 0;
+}

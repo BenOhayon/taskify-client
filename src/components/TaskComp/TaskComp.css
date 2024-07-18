@@ -1,0 +1,39 @@
+.task-container {
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    background-color: orange;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+.task-content {
+    font-size: 17px;
+    color: black;
+}
+
+.task-operations {
+    display: flex;
+    gap: 5px;
+}
+
+.task-button-image {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.task-apply-edit-button-image {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.task-edit-input {
+    height: 100%;
+    font-size: 16px;
+}

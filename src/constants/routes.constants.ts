@@ -1,0 +1,6 @@
+export const HOME_PAGE_ROUTE: string = '/home'
+export const SETTINGS_PAGE_ROUTE: string = '/settings'
+export const TASKS_PAGE_ROUTE: string = '/tasks'
+export const LOGIN_PAGE_ROUTE: string = '/login'
+export const REGISTER_PAGE_ROUTE: string = '/register'
+export const FORGOT_PASSWORD_PAGE_ROUTE: string = '/forgot-password'

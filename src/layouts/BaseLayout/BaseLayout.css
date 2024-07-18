@@ -1,0 +1,4 @@
+.base-layout {
+    max-width: var(--app-max-width);
+    margin: 0 auto;
+}

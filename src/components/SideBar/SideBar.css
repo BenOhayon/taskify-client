@@ -1,0 +1,102 @@
+.sidebar-container {
+    --sidebar-minimized-width: 60px;
+    --sidebar-width: 240px;
+    --sidebar-minimize-animation-duration: 300ms;
+
+    background-color: white;
+    border-right: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px 0 40px 0;
+    position: relative;
+    flex-shrink: 0;
+    transition: width var(--sidebar-minimize-animation-duration);
+}
+
+.sidebar-expand-minimize-button {
+    position: absolute;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    background-color: black;
+    color: white;
+    padding: 4px;
+    right: -15px;
+    top: 30px;
+    cursor: pointer;
+}
+
+.sidebar-title {
+    font-size: 24px;
+    text-align: start;
+    padding: 0 20px 20px 32px;
+    transition: padding var(--sidebar-minimize-animation-duration);
+}
+
+.sidebar-title.minimized {
+    padding: 0 10px 20px 22px;
+}
+
+.sidebar-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-inline: 20px;
+    transition: padding var(--sidebar-minimize-animation-duration);
+}
+
+.sidebar-buttons.minimized {
+    padding-inline: 10px;
+}
+
+.sidebar-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 250ms;
+}
+
+.sidebar-button.selected {
+    background-color: black;
+    color: white;
+}
+
+.sidebar-button:not(.selected):hover {
+    background-color: #c9c9c9;
+}
+
+.sidebar-button-image {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.lower-sidebar-buttons {
+    position: relative;
+}
+
+.lower-sidebar-buttons::after {
+    content: "";
+    display: block;
+    height: 1px;
+    width: 100%;
+    background-color: black;
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+}
+
+.app-version-number {
+    padding: 20px 20px 0 20px;
+    font-size: 14px;
+    color: grey;
+    transition: padding var(--sidebar-minimize-animation-duration);
+}
+
+.app-version-number.minimized {
+    padding: 20px 10px 0 10px;
+}
