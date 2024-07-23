@@ -62,3 +62,15 @@ export enum InputType {
 }
 
 export enum AuthTypes { REGISTER, LOGIN, FORGOT_PASSWORD, CREATE_NEW_PASSWORD }
+
+export type InfoDialogOptions = {
+    title: string,
+    contentText: string
+}
+
+export type ConfirmDialogOptions = InfoDialogOptions & {
+    rightButtonText: string,
+    leftButtonText: string,
+    rightButtonClickHandler: () => void,
+    leftButtonClickHandler?: () => void
+}

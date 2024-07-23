@@ -1,5 +1,5 @@
 import environment from "../config";
-import { API_ROUTE, AUTH_ROUTE, FORGOT_PASSWORD_RESET_ROUTE, LOGIN_ROUTE, REGISTER_ROUTE } from "../constants/apis.constants";
+import { API_ROUTE, AUTH_ROUTE, FORGOT_PASSWORD_RESET_ROUTE, LOGIN_ROUTE, PASSWORD_RESET_ROUTE, REGISTER_ROUTE } from "../constants/apis.constants";
 import { parseUser } from "../parsers/data.parsers";
 import { HttpMethods, UserLoginResponse } from "../types/types";
 import { request } from "../utils/apiUtils";
@@ -44,4 +44,17 @@ export async function requestPasswordReset(email: string) {
     const url = `${baseUrl}${FORGOT_PASSWORD_RESET_ROUTE}`
 
     return await request(url, HttpMethods.POST, options)
+}
+
+export async function resetPassword(email: string, newPassword: string) {
+    const options = {
+        body: {
+            email,
+            newPassword
+        }
+    }
+
+    const url = `${baseUrl}${PASSWORD_RESET_ROUTE}`
+
+    return await request(url, HttpMethods.PUT, options)
 }

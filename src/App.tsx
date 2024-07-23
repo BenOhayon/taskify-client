@@ -3,6 +3,7 @@ import './App.css'
 import TasksPage from './pages/TasksPage/TasksPage'
 import SideBarLayout from './layouts/SideBarLayout/SideBarLayout'
 import {
+	CREATE_NEW_PASSWORD_PAGE_ROUTE,
 	FORGOT_PASSWORD_PAGE_ROUTE,
 	HOME_PAGE_ROUTE,
 	LOGIN_PAGE_ROUTE,
@@ -20,6 +21,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage/ForgotPasswordPage'
 import { Provider } from 'react-redux'
 import { store } from './context/store'
 import DialogContext from './context/DialogContext/DialogContext'
+import CreateNewPasswordPage from './pages/CreateNewPasswordPage/CreateNewPasswordPage'
 
 export default function App() {
 	return (
@@ -78,6 +80,15 @@ export default function App() {
 							element={
 								<PageWrapper
 									page={ForgotPasswordPage}
+									layout={BaseLayout}
+								/>
+							}
+						/>
+						<Route
+							path={CREATE_NEW_PASSWORD_PAGE_ROUTE}
+							element={
+								<PageWrapper
+									page={CreateNewPasswordPage}
 									layout={BaseLayout}
 								/>
 							}
