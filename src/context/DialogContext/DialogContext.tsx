@@ -2,6 +2,7 @@ import { createContext, useContext, useState } from 'react'
 import { DialogContextProps } from '../../types/propTypes'
 import InfoDialog from '../../dialogs/InfoDialog/InfoDialog'
 import ConfirmDialog from '../../dialogs/ConfirmDialog/ConfirmDialog'
+import { ConfirmDialogOptions, InfoDialogOptions } from '../../types/types'
 
 const initialInfoDialogState = {
     title: "",
@@ -22,8 +23,8 @@ const initialConfirmDialogState = {
 }
 
 const Context = createContext({
-    showInfoDialog: (_title: string, _contentText: string) => { },
-    showConfirmDialog: (_title: string, _contentText: string, _rightButtonText: string, _rightButtonClickHandler: () => void, _leftButtonText: string, _leftButtonClickHandler?: () => void) => { }
+    showInfoDialog: (_dialogOptions: InfoDialogOptions) => { },
+    showConfirmDialog: (_dialogOptions: ConfirmDialogOptions) => { }
 })
 
 export function useDialogContext() {
@@ -35,7 +36,10 @@ export default function DialogContext({
 }: DialogContextProps) {
 
     const [infoDialogState, setInfoDialogState] = useState(initialInfoDialogState)
-    const [confirmDialogState, setConfirmDialogState] = useState(initialConfirmDialogState)
+    const [confirmDialogState, setConfirmDialogState] = useState({
+        ...initialConfirmDialogState,
+        leftButtonClickHandler: closeInfoDialog
+    })
 
     function closeInfoDialog() {
         setInfoDialogState(prev => ({
@@ -51,35 +55,25 @@ export default function DialogContext({
         }))
     }
 
-    function showInfoDialog(
-        title: string,
-        contentText: string
-    ) {
+    function showInfoDialog(dialogOptions: InfoDialogOptions) {
         setInfoDialogState({
             isOpen: true,
             handleDialogClose: closeInfoDialog,
-            title,
-            contentText
+            title: dialogOptions.title,
+            contentText: dialogOptions.contentText
         })
     }
 
-    function showConfirmDialog(
-        title: string,
-        contentText: string,
-        rightButtonText: string,
-        rightButtonClickHandler: () => void,
-        leftButtonText: string,
-        leftButtonClickHandler: () => void = closeConfirmDialog,
-    ) {
+    function showConfirmDialog(dialogOptions: ConfirmDialogOptions) {
         setConfirmDialogState({
             isOpen: true,
             handleDialogClose: closeConfirmDialog,
-            title,
-            contentText,
-            leftButtonText,
-            leftButtonClickHandler,
-            rightButtonText,
-            rightButtonClickHandler
+            title: dialogOptions.title,
+            contentText: dialogOptions.contentText,
+            leftButtonText: dialogOptions.leftButtonText,
+            leftButtonClickHandler: closeConfirmDialog,
+            rightButtonText: dialogOptions.rightButtonText,
+            rightButtonClickHandler: dialogOptions.rightButtonClickHandler
         })
     }
 

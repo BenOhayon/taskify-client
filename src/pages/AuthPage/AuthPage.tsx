@@ -4,14 +4,34 @@ import TaskifyInputField from "../../components/TaskifyInputField/TaskifyInputFi
 import { AuthTypes, InputType, UserLoginResponse } from "../../types/types";
 import LoaderButton from "../../components/LoaderButton/LoaderButton";
 import { ChangeEvent, useEffect, useState } from "react";
-import { loginUser, registerUser, requestPasswordReset } from "../../api/auth";
-import { useNavigate } from "react-router-dom";
-import { FORGOT_PASSWORD_PAGE_ROUTE, TASKS_PAGE_ROUTE } from "../../constants/routes.constants";
+import { loginUser, registerUser, requestPasswordReset, resetPassword } from "../../api/auth";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { FORGOT_PASSWORD_PAGE_ROUTE, FROM_USER_ROUTE_PARAM_KEY, LOGIN_PAGE_ROUTE, TASKS_PAGE_ROUTE } from "../../constants/routes.constants";
 import { TOKEN_KEY } from "../../constants/storage.constants";
 import { AuthPageProps } from "../../types/propTypes";
 import { EMAIL_REGEX } from "../../constants/regex.constants";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../context/userSlice";
+import { useDialogContext } from "../../context/DialogContext/DialogContext";
+
+const initialInputState = {
+    username: {
+        value: "",
+        helperText: ""
+    },
+    password: {
+        value: "",
+        helperText: ""
+    },
+    confirmPassword: {
+        value: "",
+        helperText: ""
+    },
+    email: {
+        value: "",
+        helperText: ""
+    }
+}
 
 export default function AuthPage({
     authType
@@ -19,28 +39,20 @@ export default function AuthPage({
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [searchParams] = useSearchParams()
+    const {
+        showInfoDialog
+    } = useDialogContext()
 
     const [inProgress, setInProgress] = useState(false)
     const [canLogin, setCanLogin] = useState(false)
-    const [inputState, setInputState] = useState({
-        username: {
-            value: "",
-            helperText: ""
-        },
-        password: {
-            value: "",
-            helperText: ""
-        },
-        email: {
-            value: "",
-            helperText: ""
-        }
-    })
+    const [inputState, setInputState] = useState(initialInputState)
     const [authPageData, setAuthPageData] = useState({
         title: '',
         haveAccountText: '',
         haveAccountButton: '',
-        authButtonText: ''
+        authButtonText: '',
+        resetPasswordRequestSent: false
     })
 
     useEffect(() => {
@@ -51,7 +63,8 @@ export default function AuthPage({
                         title: 'Login',
                         haveAccountText: "Don't have an account?",
                         haveAccountButton: "Register",
-                        authButtonText: "Login"
+                        authButtonText: "Login",
+                        resetPasswordRequestSent: false
                     })
                     break
                 }
@@ -61,7 +74,8 @@ export default function AuthPage({
                         title: 'Create an Account',
                         haveAccountText: "Already have an account?",
                         haveAccountButton: "Login",
-                        authButtonText: "Register"
+                        authButtonText: "Register",
+                        resetPasswordRequestSent: false
                     })
                     break
                 }
@@ -71,7 +85,8 @@ export default function AuthPage({
                         title: 'Forgot Password',
                         haveAccountText: '',
                         haveAccountButton: 'Back',
-                        authButtonText: 'Reset Password'
+                        authButtonText: 'Reset Password',
+                        resetPasswordRequestSent: false
                     })
                     break
                 }
@@ -81,7 +96,8 @@ export default function AuthPage({
                         title: 'Create New Password',
                         haveAccountText: '',
                         haveAccountButton: 'Back',
-                        authButtonText: 'Create Password'
+                        authButtonText: 'Create Password',
+                        resetPasswordRequestSent: false
                     })
                 }
             }
@@ -91,17 +107,33 @@ export default function AuthPage({
     useEffect(() => {
         setCanLogin(
             (inputState.username.value !== "" && inputState.password.value !== "") ||
-            (inputState.email.value !== "" && EMAIL_REGEX.test(inputState.email.value))
+            (inputState.email.value !== "" && EMAIL_REGEX.test(inputState.email.value)) ||
+            (inputState.username.value !== "" && inputState.password.value !== "" && (inputState.email.value !== "" && EMAIL_REGEX.test(inputState.email.value)) && inputState.confirmPassword.value !== "") ||
+            (inputState.confirmPassword.value !== "" && inputState.password.value !== "" && inputState.password.value === inputState.confirmPassword.value)
         )
-    }, [inputState.username.value, inputState.password.value, inputState.email.value])
+    }, [inputState.username.value, inputState.password.value, inputState.email.value, inputState.confirmPassword.value])
 
     async function authButtonClick() {
-        async function getAuthRequest(): Promise<UserLoginResponse> {
+        async function getAuthRequest() {
             switch (authType) {
                 case AuthTypes.LOGIN: return await loginUser(inputState.username.value, inputState.password.value)
                 case AuthTypes.REGISTER: return await registerUser(inputState.username.value, inputState.password.value)
-                case AuthTypes.FORGOT_PASSWORD: return await requestPasswordReset(inputState.email.value)
-                default: return new Promise((_resolve, _reject) => {  })
+                case AuthTypes.FORGOT_PASSWORD: {
+                    if (!authPageData.resetPasswordRequestSent) {
+                        return await requestPasswordReset(inputState.email.value)
+                    }
+
+                    navigate(-1)
+                    break
+                }
+                default: {
+                    const fromUser = searchParams.get(FROM_USER_ROUTE_PARAM_KEY)
+                    if (fromUser !== null) {
+                        return await resetPassword(fromUser, inputState.confirmPassword.value)
+                    }
+
+                    throw "Route error"
+                }
             }
         }
 
@@ -120,11 +152,14 @@ export default function AuthPage({
                         title: 'Check your email',
                         haveAccountText: '',
                         haveAccountButton: '',
-                        authButtonText: 'Back'
+                        authButtonText: 'Back',
+                        resetPasswordRequestSent: true
                     })
                     break
                 }
-                default: return new Promise((_resolve, _reject) => { })
+                default: { // CREATE_NEW_PASSWORD
+                    navigate(LOGIN_PAGE_ROUTE, { replace: true })
+                }
             }
         }
 
@@ -133,7 +168,10 @@ export default function AuthPage({
             const response = await getAuthRequest()
             performAuthSuccess(response)
         } catch (error) {
-            console.log(error)
+            showInfoDialog({
+                title: "Error Occurred",
+                contentText: `${error}`
+            })
         } finally {
             setInProgress(false)
         }
@@ -150,38 +188,110 @@ export default function AuthPage({
     }
 
     function renderForm() {
-        switch (authType) {
-            case AuthTypes.LOGIN:
-            case AuthTypes.REGISTER: {
-                return <>
-                    <div className="auth-form-username-field">
-                        <TaskifyInputField
-                            value={inputState.username.value}
-                            id="username"
-                            name="username"
-                            label="Username"
-                            type={InputType.TEXT}
-                            isError={inputState.username.helperText !== ""}
-                            helperText={inputState.username.helperText}
-                            onInputChange={handleInputValueChange}
-                        />
-                        {authType === AuthTypes.LOGIN && <div onClick={() => navigate(FORGOT_PASSWORD_PAGE_ROUTE)} className="auth-form-forgot-password">Forgot Password?</div>}
-                    </div>
+        function renderLoginForm() {
+            return <>
+                <div className="auth-form-username-field">
                     <TaskifyInputField
-                        value={inputState.password.value}
-                        id="password"
-                        name="password"
-                        label="Password"
-                        type={InputType.PASSWORD}
-                        isError={inputState.password.helperText !== ""}
-                        helperText={inputState.password.helperText}
+                        value={inputState.username.value}
+                        id="username"
+                        name="username"
+                        label="Username"
+                        type={InputType.TEXT}
+                        isError={inputState.username.helperText !== ""}
+                        helperText={inputState.username.helperText}
                         onInputChange={handleInputValueChange}
                     />
-                </>
-            }
+                    <div onClick={() => navigate(`${FORGOT_PASSWORD_PAGE_ROUTE}`)} className="auth-form-forgot-password">Forgot Password?</div>
+                </div>
+                <TaskifyInputField
+                    value={inputState.password.value}
+                    id="password"
+                    name="password"
+                    label="Password"
+                    type={InputType.PASSWORD}
+                    isError={inputState.password.helperText !== ""}
+                    helperText={inputState.password.helperText}
+                    onInputChange={handleInputValueChange}
+                />
+            </>
+        }
+
+        function renderRegisterForm() {
+            return <>
+                <TaskifyInputField
+                    value={inputState.username.value}
+                    id="username"
+                    name="username"
+                    label="username"
+                    type={InputType.TEXT}
+                    isError={inputState.username.helperText !== ""}
+                    helperText={inputState.username.helperText}
+                    onInputChange={handleInputValueChange}
+                />
+                <TaskifyInputField
+                    value={inputState.email.value}
+                    id="email"
+                    name="email"
+                    label="Email"
+                    type={InputType.EMAIL}
+                    isError={inputState.email.helperText !== ""}
+                    helperText={inputState.email.helperText}
+                    onInputChange={handleInputValueChange}
+                />
+                <TaskifyInputField
+                    value={inputState.password.value}
+                    id="password"
+                    name="password"
+                    label="Password"
+                    type={InputType.PASSWORD}
+                    isError={inputState.password.helperText !== ""}
+                    helperText={inputState.password.helperText}
+                    onInputChange={handleInputValueChange}
+                />
+                <TaskifyInputField
+                    value={inputState.confirmPassword.value}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    label="Confirm Password"
+                    type={InputType.PASSWORD}
+                    isError={inputState.confirmPassword.helperText !== ""}
+                    helperText={inputState.confirmPassword.helperText}
+                    onInputChange={handleInputValueChange}
+                />
+            </>
+        }
+
+        function renderResetPasswordForm() {
+            return <>
+                <TaskifyInputField
+                    value={inputState.password.value}
+                    id="password"
+                    name="password"
+                    label="Type a new password"
+                    type={InputType.PASSWORD}
+                    isError={inputState.password.helperText !== ""}
+                    helperText={inputState.password.helperText}
+                    onInputChange={handleInputValueChange}
+                />
+                <TaskifyInputField
+                    value={inputState.confirmPassword.value}
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    label="Retype your password"
+                    type={InputType.PASSWORD}
+                    isError={inputState.confirmPassword.helperText !== ""}
+                    helperText={inputState.confirmPassword.helperText}
+                    onInputChange={handleInputValueChange}
+                />
+            </>
+        }
+
+        switch (authType) {
+            case AuthTypes.LOGIN: return renderLoginForm()
+            case AuthTypes.REGISTER: return renderRegisterForm()
 
             case AuthTypes.FORGOT_PASSWORD: {
-                return <>
+                return authPageData.resetPasswordRequestSent ? <></> : <>
                     <p className="forgot-password-description">
                         Enter your password to receive a reset password link to your email
                     </p>
@@ -197,6 +307,9 @@ export default function AuthPage({
                     />
                 </>
             }
+
+            // CREATE_NEW_PASSWORD
+            default: return renderResetPasswordForm()
         }
     }
 

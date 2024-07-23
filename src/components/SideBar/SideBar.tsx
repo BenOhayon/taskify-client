@@ -32,13 +32,13 @@ export default function SideBar({
     }
 
     function onLoginButtonClick() {
-        showConfirmDialog(
-            "Are you sure?", 
-            "Are you sure you want to logout?",
-            "Yes",
-            logout,
-            "No"
-        )
+        showConfirmDialog({
+            title: "Are you sure?", 
+            contentText: "Are you sure you want to logout?",
+            rightButtonText: "Yes",
+            rightButtonClickHandler: logout,
+            leftButtonText: "No"
+        })
     }
 
     return (

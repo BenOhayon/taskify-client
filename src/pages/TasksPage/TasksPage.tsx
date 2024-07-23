@@ -9,7 +9,7 @@ import { FiPlusCircle } from 'react-icons/fi'
 
 export default function TasksPage() {
 	const [tasks, setTasks] = useState<Task[]>([])
-	const [isLoading, setIsLoading] = useState(false)
+	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
 		fetchAllTasks()
