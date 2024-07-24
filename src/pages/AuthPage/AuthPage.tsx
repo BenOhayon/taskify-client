@@ -106,10 +106,10 @@ export default function AuthPage({
 
     useEffect(() => {
         setCanLogin(
-            (inputState.username.value !== "" && inputState.password.value !== "") ||
-            (inputState.email.value !== "" && EMAIL_REGEX.test(inputState.email.value)) ||
-            (inputState.username.value !== "" && inputState.password.value !== "" && (inputState.email.value !== "" && EMAIL_REGEX.test(inputState.email.value)) && inputState.confirmPassword.value !== "") ||
-            (inputState.confirmPassword.value !== "" && inputState.password.value !== "" && inputState.password.value === inputState.confirmPassword.value)
+            (authType === AuthTypes.LOGIN && inputState.username.value !== "" && inputState.password.value !== "") ||
+            (authType === AuthTypes.FORGOT_PASSWORD && inputState.email.value !== "" && EMAIL_REGEX.test(inputState.email.value)) ||
+            (authType === AuthTypes.REGISTER && inputState.username.value !== "" && inputState.password.value !== "" && (inputState.email.value !== "" && EMAIL_REGEX.test(inputState.email.value)) && inputState.confirmPassword.value === inputState.password.value) ||
+            (authType === AuthTypes.CREATE_NEW_PASSWORD && inputState.password.value !== "" && inputState.password.value === inputState.confirmPassword.value)
         )
     }, [inputState.username.value, inputState.password.value, inputState.email.value, inputState.confirmPassword.value])
 
@@ -117,7 +117,7 @@ export default function AuthPage({
         async function getAuthRequest() {
             switch (authType) {
                 case AuthTypes.LOGIN: return await loginUser(inputState.username.value, inputState.password.value)
-                case AuthTypes.REGISTER: return await registerUser(inputState.username.value, inputState.password.value)
+                case AuthTypes.REGISTER: return await registerUser(inputState.username.value, inputState.email.value, inputState.password.value)
                 case AuthTypes.FORGOT_PASSWORD: {
                     if (!authPageData.resetPasswordRequestSent) {
                         return await requestPasswordReset(inputState.email.value)

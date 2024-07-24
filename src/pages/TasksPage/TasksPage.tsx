@@ -6,13 +6,16 @@ import { deleteTaskById, fetchAllTasks, updateTaskById } from '../../api/tasks'
 import Loader from '../../components/Loader/Loader'
 import { IconButton } from '@mui/material'
 import { FiPlusCircle } from 'react-icons/fi'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../context/store'
 
 export default function TasksPage() {
+	const user = useSelector((state: RootState) => state.user)
 	const [tasks, setTasks] = useState<Task[]>([])
 	const [isLoading, setIsLoading] = useState(true)
 
 	useEffect(() => {
-		fetchAllTasks()
+		fetchAllTasks(user.id)
 			.then(tasks => setTasks(tasks))
 			.catch(console.log)
 			.finally(() => setIsLoading(false))

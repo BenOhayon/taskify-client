@@ -6,3 +6,5 @@ export const REGISTER_ROUTE = '/register'
 export const NEW_ROUTE = '/new'
 export const FORGOT_PASSWORD_RESET_ROUTE = '/forgot-password-request'
 export const PASSWORD_RESET_ROUTE = '/reset-password'
+
+export const USER_ID_KEY = 'userId'
