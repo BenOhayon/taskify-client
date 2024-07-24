@@ -4,19 +4,6 @@ export interface Task {
     text: string
 }
 
-export interface RawTask {
-    id: string,
-    text: string
-}
-
-export interface RawUser {
-    id: string,
-    username: string,
-    password?: string,
-    created_at?: number,
-    email: string
-}
-
 export type User = {
     id: string,
     username: string,
