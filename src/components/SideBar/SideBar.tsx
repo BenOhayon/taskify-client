@@ -49,10 +49,10 @@ export default function SideBar({
             <div className="sidebar-upper">
                 <div className={`sidebar-title ${isMinimized ? 'minimized' : ''}`}>{isMinimized ? 'T' : 'Taskify'}</div>
                 <div className={`sidebar-buttons ${isMinimized ? 'minimized' : ''}`}>
-                    <div className={`sidebar-button ${window.location.pathname === HOME_PAGE_ROUTE ? 'selected' : ''}`} onClick={() => navigate(HOME_PAGE_ROUTE)}>
+                    {/* <div className={`sidebar-button ${window.location.pathname === HOME_PAGE_ROUTE ? 'selected' : ''}`} onClick={() => navigate(HOME_PAGE_ROUTE)}>
                         <LuLayoutDashboard className='sidebar-button-image' />
                         {!isMinimized && <div className="sidebar-button-text">Home</div>}
-                    </div>
+                    </div> */}
                     <div className={`sidebar-button ${window.location.pathname === TASKS_PAGE_ROUTE ? 'selected' : ''}`} onClick={() => navigate(TASKS_PAGE_ROUTE)}>
                         <GrTask className='sidebar-button-image' />
                         {!isMinimized && <div className="sidebar-button-text">Tasks</div>}
@@ -61,10 +61,10 @@ export default function SideBar({
             </div>
             <div className="sidebar-lower">
                 <div className={`sidebar-buttons lower-sidebar-buttons ${isMinimized ? 'minimized' : ''}`}>
-                    <div className={`sidebar-button settings-sidebar-button ${window.location.pathname === SETTINGS_PAGE_ROUTE ? 'selected' : ''}`} onClick={() => navigate(SETTINGS_PAGE_ROUTE)}>
+                    {/* <div className={`sidebar-button settings-sidebar-button ${window.location.pathname === SETTINGS_PAGE_ROUTE ? 'selected' : ''}`} onClick={() => navigate(SETTINGS_PAGE_ROUTE)}>
                         <IoMdSettings className='sidebar-button-image' />
                         {!isMinimized && <div className="sidebar-button-text">Settings</div>}
-                    </div>
+                    </div> */}
                     <div className={`sidebar-button settings-sidebar-button`} onClick={onLoginButtonClick}>
                         <BiLogOut className='sidebar-button-image' />
                         {!isMinimized && <div className="sidebar-button-text">Logout</div>}

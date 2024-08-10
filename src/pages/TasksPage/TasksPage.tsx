@@ -26,21 +26,30 @@ export default function TasksPage() {
 		setTasks(prev => prev.filter(task => task?.id !== id))
 	}
 
-	function editTask(id: string, newContent: string) {
-		const updatedTaskData = {
-			id: '',
-			text: newContent
-		}
-		updateTaskById(id, updatedTaskData)
-		const updatedTasks = [...tasks]
-		const updatedTaskIndex = updatedTasks.findIndex(task => task?.id === id)
-		const updatedTask = updatedTasks[updatedTaskIndex]
-		if (updatedTask) {
-			updatedTask.text = newContent
-			updatedTasks.splice(updatedTaskIndex, 1, updatedTask)
-			setTasks(updatedTasks)
-		}
-	}
+	// function editTask(
+	// 	id: string,
+	// 	title: string,
+	// 	description: string,
+	// 	done: boolean
+	// ) {
+	// 	const updatedTaskData = {
+	// 		id: '',
+	// 		title,
+	// 		description,
+	// 		done
+	// 	}
+	// 	updateTaskById(id, updatedTaskData)
+	// 	const updatedTasks = [...tasks]
+	// 	const updatedTaskIndex = updatedTasks.findIndex(task => task?.id === id)
+	// 	const updatedTask = updatedTasks[updatedTaskIndex]
+	// 	if (updatedTask) {
+	// 		updatedTask.title = title
+	// 		updatedTask.description = description
+	// 		updatedTask.done = done
+	// 		updatedTasks.splice(updatedTaskIndex, 1, updatedTask)
+	// 		setTasks(updatedTasks)
+	// 	}
+	// }
 
 	return (
 		<div className='tasks-page-container'>
@@ -69,9 +78,12 @@ export default function TasksPage() {
 									tasks.map(task => <TaskComp
 										key={task?.id}
 										id={task?.id}
-										content={task?.text}
+										title={task?.title}
+										description={task?.description}
+										createdAt={task.createdAt}
+										done={task.done}
 										onDelete={deleteTask}
-										onEdit={editTask}
+										// onEdit={editTask}
 									/>)
 								}
 							</div>

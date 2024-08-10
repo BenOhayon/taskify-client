@@ -7,9 +7,12 @@ interface HasChildren {
 
 export interface TaskProps {
     id: string,
-    content: string,
+    title: string,
+    description: string,
+    createdAt: number,
+    done: boolean,
     onDelete?: (id: string) => void,
-    onEdit?: (id: string, newValue: string) => void
+    onEdit?: (id: string) => void
 }
 
 export interface PageWrapperProps {
@@ -94,3 +97,9 @@ export type TaskifyDialogProps = BaseDialogProps & {
 }
 
 export type DialogContextProps = HasChildren
+
+export type TaskifyCheckboxProps = {
+    checked: boolean,
+    setChecked: (val: boolean) => void,
+    label?: string
+}

@@ -23,7 +23,8 @@ export default function SideBarLayout({
                 />
                 <div className="sidebar-layout-content" style={{
                     ...PAGES_CONFIG[window.location.pathname].styles,
-                    width: `calc(${window.innerWidth} - ${isMinimized ? SIDEBAR_MINIMIZED_WIDTH_PX : SIDEBAR_WIDTH_PX}px)`
+                    width: `calc(${window.innerWidth}px - ${isMinimized ? SIDEBAR_MINIMIZED_WIDTH_PX : SIDEBAR_WIDTH_PX}px)`,
+                    paddingLeft: `${isMinimized ? SIDEBAR_MINIMIZED_WIDTH_PX : SIDEBAR_WIDTH_PX}px`
                 }}>
                     {children}
                 </div>

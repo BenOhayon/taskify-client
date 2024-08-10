@@ -1,8 +1,14 @@
 
 export interface Task {
     id: string,
-    text: string
+    title: string,
+    description: string,
+    createdAt: number,
+    userId: string,
+    done: boolean
 }
+
+export type TaskData = Omit<Task, "createdAt" | "userId">
 
 export type User = {
     id: string,

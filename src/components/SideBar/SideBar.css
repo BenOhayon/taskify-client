@@ -9,7 +9,10 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 20px 0 40px 0;
-    position: relative;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
     flex-shrink: 0;
     transition: width var(--sidebar-minimize-animation-duration);
 }

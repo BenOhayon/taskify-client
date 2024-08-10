@@ -17,9 +17,7 @@ export const PAGES_CONFIG: PageConfigMapper = {
         styles: {}
     },
     [TASKS_PAGE_ROUTE]: {
-        styles: {
-            padding: '20px 20px 0 20px'
-        }
+        styles: {}
     },
     [SETTINGS_PAGE_ROUTE]: {
         styles: {}

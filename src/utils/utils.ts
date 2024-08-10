@@ -10,7 +10,7 @@ export function generateTaskId() {
     return 'Task_' + generateUID()
 }
 
-export function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>, handleInput: Function) {
+export function handleEnterKeyDown(e: KeyboardEvent<HTMLInputElement>, handleInput: () => void) {
     if (e.key === 'Enter') {
         handleInput()
     }
