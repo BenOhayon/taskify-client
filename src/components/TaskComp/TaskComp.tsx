@@ -1,5 +1,5 @@
 import { MdEdit } from 'react-icons/md'
-import { TaskProps } from '../../types/propTypes'
+import { TaskCompProps } from '../../types/propTypes'
 import './TaskComp.css'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 import TaskifyCheckbox from '../TaskifyCheckbox/TaskifyCheckbox'
@@ -7,26 +7,22 @@ import { useState } from 'react'
 import { IconButton } from '@mui/material'
 
 export default function TaskComp({
-    id,
-    title,
-    description,
-    createdAt,
-    done,
+    task,
     onDelete = () => { },
     onEdit = () => { }
-}: TaskProps) {
+}: TaskCompProps) {
 
-    const [isTaskDone, setIsTaskDone] = useState(done)
+    const [isTaskDone, setIsTaskDone] = useState(task.done)
 
     function formatCreationDate() {
-        return new Intl.DateTimeFormat('en-US').format(createdAt)
+        return new Intl.DateTimeFormat('en-US').format(task.createdAt)
     }
 
     return (
         <div className={`task-container ${isTaskDone ? 'done' : ''}`}>
             <div className="task-upper-container">
                 <div className="task-titles-container">
-                    <div className="task-title">{title}</div>
+                    <div className="task-title">{task.title}</div>
                     <div className="task-created-at">Created at: {formatCreationDate()}</div>
                 </div>
                 <TaskifyCheckbox 
@@ -34,12 +30,12 @@ export default function TaskComp({
                     setChecked={setIsTaskDone}
                 />
             </div>
-            <p className="task-description">{description}</p>
+            <p className="task-description">{task.description}</p>
             <div className="task-operations">
-                <IconButton onClick={() => onEdit(id)}>
+                <IconButton onClick={() => onEdit(task)}>
                     <MdEdit className='task-button-image' />
                 </IconButton>
-                <IconButton onClick={() => onDelete(id)}>
+                <IconButton onClick={() => onDelete(task.id)}>
                     <RiDeleteBin6Line className='task-button-image' />
                 </IconButton>
             </div>

@@ -1,18 +1,14 @@
 import { ChangeEvent, RefObject, ReactNode } from "react"
-import { AuthTypes, InputType } from "./types"
+import { AuthTypes, InputType, Task, TaskFormType } from "./types"
 
 interface HasChildren {
     children?: React.ReactNode
 }
 
-export interface TaskProps {
-    id: string,
-    title: string,
-    description: string,
-    createdAt: number,
-    done: boolean,
+export interface TaskCompProps {
+    task: Task,
     onDelete?: (id: string) => void,
-    onEdit?: (id: string) => void
+    onEdit?: (task: Task) => void
 }
 
 export interface PageWrapperProps {
@@ -44,6 +40,7 @@ export interface TaskifyInputFieldProps {
     isError?: boolean,
     helperText?: string,
     stretch?: boolean,
+    multiline?: boolean,
     onInputChange?: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -69,7 +66,7 @@ export type AuthPageProps = {
 }
 
 export type BaseDialogProps = {
-    title: string,
+    title?: string,
     isOpen: boolean,
     handleDialogClose: () => void
 }
@@ -87,7 +84,6 @@ export type ConfirmDialogProps = BaseDialogProps & {
 }
 
 export type TaskifyDialogProps = BaseDialogProps & {
-    title?: string,
     contentText?: string,
     leftActionButtonText?: string,
     rightActionButtonText?: string,
@@ -102,4 +98,11 @@ export type TaskifyCheckboxProps = {
     checked: boolean,
     setChecked: (val: boolean) => void,
     label?: string
+}
+
+export type TaskFormDialogProps = BaseDialogProps & {
+    mode: TaskFormType,
+    task: Task,
+    dialogLayout?: ReactNode,
+    performEdit: 
 }

@@ -15,15 +15,15 @@ export async function fetchTaskById(taskId: string) {
     return await authRequest(url, HttpMethods.GET, {})
 }
 
-export async function updateTaskById(taskId: string, data: TaskData) {
+export async function updateTaskById(task: TaskData) {
     const options = {
         body: {
-            title: data?.title,
-            description: data?.description,
-            done: data?.done
+            title: task?.title,
+            description: task?.description,
+            done: task?.done
         }
     }
-    const url = `${baseUrl}/${taskId}`
+    const url = `${baseUrl}/${task?.id}`
     return await authRequest(url, HttpMethods.PUT, options)
 }
 

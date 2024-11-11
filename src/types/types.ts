@@ -67,3 +67,5 @@ export type ConfirmDialogOptions = InfoDialogOptions & {
     rightButtonClickHandler: () => void,
     leftButtonClickHandler?: () => void
 }
+
+export enum TaskFormType { CREATE, EDIT }

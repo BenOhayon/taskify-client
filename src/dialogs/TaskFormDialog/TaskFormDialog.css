@@ -1,0 +1,48 @@
+.task-form-dialog {
+    box-sizing: inherit;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding: 20px;
+}
+
+.task-form-dialog-title {
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.task-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.task-form-actions {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.task-form-button {
+    box-sizing: border-box;
+    height: 35px;
+    font-size: 15px;
+    padding: 7px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.task-primary-form-button {
+    color: white;
+    background-color: black;
+}
+
+.task-secondary-form-button {
+    border: 1px solid black;
+    color: black;
+    background-color: white;
+}

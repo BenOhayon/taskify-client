@@ -13,6 +13,7 @@ export default function TaskifyInputField({
     isError = false,
     helperText = "",
     stretch = true,
+    multiline = false,
     onInputChange = () => { }
 }: TaskifyInputFieldProps) {
     return (
@@ -26,6 +27,7 @@ export default function TaskifyInputField({
             helperText={helperText}
             disabled={isDisabled}
             value={value}
+            multiline={multiline}
             sx={{
                 width: stretch ? '100%' : 'initial'
             }}
